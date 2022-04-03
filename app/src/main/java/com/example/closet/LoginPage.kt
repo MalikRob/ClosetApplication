@@ -13,20 +13,21 @@ import androidx.room.Room
 
 import com.example.closet.database.UserDAO
 import com.example.closet.database.UserDatabase
-import com.example.closet.ui.RegisterActivity
+import com.example.closet.ui.RegistrationPage
 import com.example.closet.ui.User
 
 
-class MainActivity : AppCompatActivity() {
-    var editTextEmail: EditText? = null
-    var editTextPassword: EditText? = null
-    var buttonLogin: Button? = null
-    var textViewRegister: TextView? = null
-    var db: UserDAO? = null
-    var dataBase: UserDatabase? = null
+class LoginPage : AppCompatActivity() {
+    private lateinit var editTextEmail: EditText
+    private lateinit var editTextPassword: EditText
+    private lateinit var buttonLogin: Button
+    private lateinit var textViewRegister: TextView
+    private lateinit var db: UserDAO
+    private lateinit var dataBase: UserDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.login_page)
+        //Email == Username
         editTextEmail = findViewById(R.id.editTextEmail)
         editTextPassword = findViewById(R.id.editTextPassword)
         buttonLogin = findViewById(R.id.buttonLogin)
@@ -34,27 +35,27 @@ class MainActivity : AppCompatActivity() {
         dataBase = Room.databaseBuilder(this, UserDatabase::class.java, "mi-database.db")
             .allowMainThreadQueries()
             .build()
-        db = dataBase.getUserDAO()
+        db = dataBase.UserDAO!!
         textViewRegister.setOnClickListener(View.OnClickListener {
             startActivity(
                 Intent(
-                    this@MainActivity,
-                    RegisterActivity::class.java
+                    this@LoginPage,
+                    RegistrationPage::class.java
                 )
             )
         })
         buttonLogin.setOnClickListener(View.OnClickListener {
-            val email = editTextEmail.getText().toString().trim { it <= ' ' }
-            val password = editTextPassword.getText().toString().trim { it <= ' ' }
-            val user: User? = db?.getUser(email, password)
+            val email = editTextEmail.text.toString().trim { it <= ' ' }
+            val password = editTextPassword.text.toString().trim { it <= ' ' }
+            val user: User? = db.getUser(email, password)
             if (user != null) {
-                val i = Intent(this@MainActivity, MainClosetDisplayPage::class.java)
+                val i = Intent(this@LoginPage, MainClosetDisplayPage::class.java)
                 i.putExtra("User", user)
                 startActivity(i)
                 finish()
             } else {
                 Toast.makeText(
-                    this@MainActivity,
+                    this@LoginPage,
                     "Unregistered user, or incorrect",
                     Toast.LENGTH_SHORT
                 ).show()
