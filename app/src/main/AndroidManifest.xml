@@ -10,6 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Closet">
+        <activity
+            android:name=".ui.RegistrationPage"
+            android:exported="false" />
         <!--
         <activity
             android:name=".OpenCameraLibrary"
@@ -17,7 +20,7 @@
         <activity
             android:name=".EditClothingDetailsPage"
             android:exported="false" />
-            -->
+        -->
         <activity
             android:name=".MainClosetDisplayPage"
             android:exported="false" />
