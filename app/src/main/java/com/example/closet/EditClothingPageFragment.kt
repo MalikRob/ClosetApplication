@@ -3,10 +3,14 @@
 package com.example.closet
 
 
+//import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -19,12 +23,13 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.lifecycle.Observer
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.io.File
+import java.io.IOException
 import java.util.*
+
 
 private const val ARG_CLOTHING_ITEM_ID = "clothing_item_id"
 
@@ -32,12 +37,17 @@ class EditClothingPageFragment: Fragment() {
 
     private lateinit var clothingItem: ClothingItem
     private lateinit var photoFile: File
-
+    private lateinit var photoUri: Uri
+    val REQUEST_IMAGE_CAPTURE = 1
+    val PICK_IMAGE = 2
     private lateinit var clothingTypeField: EditText
     private lateinit var colorField: EditText
     private lateinit var clothingDescriptionField: EditText
     private lateinit var photoView: ImageView
     private lateinit var imageGallery: ImageButton
+    private lateinit var captureImage: ImageButton
+
+
     private val clothingItemDetailViewModel: ClothingItemDetailViewModel by lazy {
         ViewModelProvider(this).get(ClothingItemDetailViewModel::class.java)
     }
@@ -57,27 +67,28 @@ class EditClothingPageFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.edit_clothing_details_page,container, false)
-
+        val previewImage: ImageView by lazy { view.findViewById<ImageView>(R.id.clothing_item_photo)  }
         //Any buttons or user interactable objects that use or receive data.
         clothingTypeField = view.findViewById(R.id.edit_clothing_type) as EditText
         colorField = view.findViewById(R.id.edit_clothing_color) as EditText
         clothingDescriptionField = view.findViewById(R.id.edit_clothing_description) as EditText
         photoView = view.findViewById(R.id.clothing_item_photo) as ImageView
-
         imageGallery = view.findViewById(R.id.image_gallery_button) as ImageButton
-
-        val previewImage by lazy {view.findViewById<ImageView>(R.id.clothing_item_photo) }
-
-        val selectImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri?.let { previewImage.setImageURI(uri) }
-        }
-        fun selectImageFromGallery() = selectImageFromGalleryResult.launch("image/*")
-        imageGallery.setOnClickListener {
-            selectImageFromGallery()
-        }
-
+        captureImage = view.findViewById(R.id.camera_button) as ImageButton
         return view
+
+      /*  val selectImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let { photoView.setImageURI(uri) }
+        }*/
+
+       /* fun selectImageFromGallery() = selectImageFromGalleryResult.launch("image/*")
+*/
+        imageGallery.setOnClickListener {
+                    selectImageFromGallery()
+                }*/
+
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -86,8 +97,8 @@ class EditClothingPageFragment: Fragment() {
             Observer { clothingItems -> clothingItems?.let {
                     if (clothingItems != null) {
                         this.clothingItem = clothingItems
-                        //photoFile = clothingItemDetailViewModel.getPhotoFile(clothingItem)
-
+                        photoFile = clothingItemDetailViewModel.getPhotoFile(clothingItems)
+                        photoUri = FileProvider.getUriForFile(requireActivity(),"com.example.closet.provider", photoFile)
                         updateUI()
                     }
                 }
@@ -148,45 +159,93 @@ class EditClothingPageFragment: Fragment() {
                 }
             }
 
-
-
-
-
             clothingTypeField.addTextChangedListener(clothingTypeWatcher)
             colorField.addTextChangedListener(clothingColorWatcher)
             clothingDescriptionField.addTextChangedListener(clothingDescriptionWatcher)
 
-            //return view?
-    }
 
-    override fun onStop() {
-        super.onStop()
-        clothingItemDetailViewModel.saveClothingItem(clothingItem)
-    }
+        captureImage.apply {
+            val packageManager: PackageManager = requireActivity().packageManager
 
-    private fun updateUI() {
-        clothingTypeField.setText(clothingItem.clothingType)
-        colorField.setText(clothingItem.color)
-        clothingDescriptionField.setText(clothingItem.description)
+            val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val resolvedActivity: ResolveInfo? =
+                packageManager.resolveActivity(takePicture,PackageManager.MATCH_DEFAULT_ONLY)
 
+            if (resolvedActivity == null){
+                isEnabled = false
+             }
+            setOnClickListener {
+                takePicture.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
 
-    }
+                val cameraActivities: List<ResolveInfo> =
+                    packageManager.queryIntentActivities(takePicture,PackageManager.MATCH_DEFAULT_ONLY)
 
+                for (cameraActivity in cameraActivities){
+                    requireActivity().grantUriPermission(
+                        cameraActivity.activityInfo.packageName,
+                        photoUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                }
 
-
-
-
-    companion object {
-        fun newInstance(clothingItemId: UUID): EditClothingPageFragment {
-            val args = Bundle().apply {
-                putSerializable(ARG_CLOTHING_ITEM_ID, clothingItemId)
-            }
-            return EditClothingPageFragment().apply {
-                arguments = args
+                startActivityForResult(takePicture, REQUEST_IMAGE_CAPTURE)
             }
         }
+        imageGallery.apply {
+            // val packageManager: PackageManager = requireActivity().packageManager
+            // val pickImage = Intent (Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            // val resolvedActivity: ResolveInfo? =
+            //  packageManager.resolveActivity(pickImage,PackageManager.MATCH_DEFAULT_ONLY)
+            //if (resolvedActivity == null){
+            //           isEnabled = false
+            //   }
+            //   startActivityForResult(pickImage, PICK_IMAGE)
 
-    }
+        }
+}
+
+private fun updatePhotoView(){
+ if(photoFile.exists()){
+     val bitmap = getScaledBitmap(photoFile.path, requireActivity())
+     photoView.setImageBitmap(bitmap)
+ }else{
+     photoView.setImageDrawable(null)
+ }
+}
+
+override fun onStop() {
+ super.onStop()
+ clothingItemDetailViewModel.saveClothingItem(clothingItem)
+}
+
+private fun updateUI() {
+ clothingTypeField.setText(clothingItem.clothingType)
+ colorField.setText(clothingItem.color)
+ clothingDescriptionField.setText(clothingItem.description)
+
+ updatePhotoView()
+
+}
+
+override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+ when (requestCode) {
+     REQUEST_IMAGE_CAPTURE -> {
+         updatePhotoView()
+     } PICK_IMAGE ->{
+         updatePhotoView()
+     }}
+}
+
+companion object {
+ fun newInstance(clothingItemId: UUID): EditClothingPageFragment {
+     val args = Bundle().apply {
+         putSerializable(ARG_CLOTHING_ITEM_ID, clothingItemId)
+     }
+     return EditClothingPageFragment().apply {
+         arguments = args
+     }
+ }
+
+}
 }
 
 

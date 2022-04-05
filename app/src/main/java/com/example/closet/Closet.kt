@@ -23,7 +23,10 @@ data class ClothingItem(@PrimaryKey val id: UUID = UUID.randomUUID(),
                         var clothingType: String = "",
                         var color: String = "",
                         var description: String = "")
-{}
+{
+    val photoFileName
+    get() = "IMG_$id.jpg"
+}
 
 
 @Entity

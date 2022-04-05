@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.example.closet.database.ClosetDatabase
 import com.example.closet.ClothingItem
+import java.io.File
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -37,6 +38,9 @@ class ClosetRepository private constructor(context: Context) {
 
     private val closetDAO = database.closetDao()
     private val executor = Executors.newSingleThreadExecutor()
+    private val filesDir = context.applicationContext.filesDir
+
+    fun getPhotoFile(clothingItem: ClothingItem): File = File(filesDir, clothingItem.photoFileName)
 
     fun getClothingItems(): LiveData<List<ClothingItem>> = closetDAO.getClothingItems()
 

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.example.closet.ClosetRepository
 import com.example.closet.Closet
 import com.example.closet.ClothingItem
+import java.io.File
 import java.util.*
 
 class ClosetViewModel: ViewModel() {

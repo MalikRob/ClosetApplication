@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import java.io.File
 import java.util.*
 
 class ClothingItemDetailViewModel() : ViewModel() {
@@ -22,5 +23,8 @@ class ClothingItemDetailViewModel() : ViewModel() {
 
     fun saveClothingItem(clothingItem: ClothingItem){
         clothingItemRepository.updateClothingItem(clothingItem)
+    }
+    fun getPhotoFile(clothingItem: ClothingItem): File {
+        return clothingItemRepository.getPhotoFile(clothingItem)
     }
 }

@@ -192,6 +192,8 @@ class ClosetListFragment: Fragment() {
     private fun updateUI(clothingItems: List<ClothingItem>) {
         adapter = ClothingItemAdapter(clothingItems)
         closetRecyclerView.adapter = adapter
+
+
     }
 
     companion object {
