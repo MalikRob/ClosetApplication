@@ -7,10 +7,7 @@ package com.example.closet
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -27,7 +24,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import java.io.File
-import java.io.IOException
 import java.util.*
 
 
@@ -68,24 +64,25 @@ class EditClothingPageFragment: Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.edit_clothing_details_page,container, false)
         val previewImage: ImageView by lazy { view.findViewById<ImageView>(R.id.clothing_item_photo)  }
-        //Any buttons or user interactable objects that use or receive data.
+        //Any buttons or user intractable objects that use or receive data.
         clothingTypeField = view.findViewById(R.id.edit_clothing_type) as EditText
         colorField = view.findViewById(R.id.edit_clothing_color) as EditText
         clothingDescriptionField = view.findViewById(R.id.edit_clothing_description) as EditText
         photoView = view.findViewById(R.id.clothing_item_photo) as ImageView
         imageGallery = view.findViewById(R.id.image_gallery_button) as ImageButton
         captureImage = view.findViewById(R.id.camera_button) as ImageButton
-        return view
 
-      /*  val selectImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+
+        //selectImageFromGalleryResult Lets the user pick between gallery and photos.
+        val selectImageFromGalleryResult = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let { photoView.setImageURI(uri) }
-        }*/
-
-       /* fun selectImageFromGallery() = selectImageFromGalleryResult.launch("image/*")
-*/
+        }
+        fun selectImageFromGallery() = selectImageFromGalleryResult.launch("image/*")
         imageGallery.setOnClickListener {
-                    selectImageFromGallery()
-                }*/
+            selectImageFromGallery()
+        }
+
+        return view
 
     }
 
@@ -181,6 +178,7 @@ class EditClothingPageFragment: Fragment() {
                     packageManager.queryIntentActivities(takePicture,PackageManager.MATCH_DEFAULT_ONLY)
 
                 for (cameraActivity in cameraActivities){
+
                     requireActivity().grantUriPermission(
                         cameraActivity.activityInfo.packageName,
                         photoUri,
@@ -190,15 +188,34 @@ class EditClothingPageFragment: Fragment() {
                 startActivityForResult(takePicture, REQUEST_IMAGE_CAPTURE)
             }
         }
+
         imageGallery.apply {
-            // val packageManager: PackageManager = requireActivity().packageManager
-            // val pickImage = Intent (Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            // val resolvedActivity: ResolveInfo? =
-            //  packageManager.resolveActivity(pickImage,PackageManager.MATCH_DEFAULT_ONLY)
-            //if (resolvedActivity == null){
-            //           isEnabled = false
-            //   }
-            //   startActivityForResult(pickImage, PICK_IMAGE)
+             val packageManager: PackageManager = requireActivity().packageManager
+
+             val pickImage = Intent (Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+
+             val resolvedActivity: ResolveInfo? = packageManager.resolveActivity(pickImage,PackageManager.MATCH_DEFAULT_ONLY)
+
+             if (resolvedActivity == null){
+                       isEnabled = false
+             }
+            //New Addition
+            setOnClickListener {
+                pickImage.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+
+                val galleryActivities: List<ResolveInfo> =
+                    packageManager.queryIntentActivities(pickImage,PackageManager.MATCH_DEFAULT_ONLY)
+
+                for (galleryActivity in galleryActivities){
+
+                    requireActivity().grantUriPermission(
+                        galleryActivity.activityInfo.packageName,
+                        photoUri,
+                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+                }
+
+                startActivityForResult(pickImage, PICK_IMAGE)
+            }
 
         }
 }
