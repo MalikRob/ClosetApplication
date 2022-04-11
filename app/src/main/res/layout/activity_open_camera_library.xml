@@ -8,6 +8,7 @@
 
 
 
+    <!-- Picture view for the Camera-->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/image_preview_card"
         android:layout_width="0dp"
@@ -21,6 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="NotSibling">
+        <!-- Image Constraints-->
         <ImageView
             android:id="@+id/image_preview"
             android:layout_width="wrap_content"
@@ -30,6 +32,7 @@
     </com.google.android.material.card.MaterialCardView>
 
 
+    <!-- Layout of the screen overall-->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
 
         android:layout_width="match_parent"
@@ -38,6 +41,7 @@
         tools:layout_editor_absoluteY="0dp">
 
 
+        <!-- The Button That Triggers for the Image to be stored-->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/pick_image_button"
             android:layout_width="wrap_content"
@@ -47,6 +51,7 @@
             android:contentDescription="fab_content_desc"
             app:srcCompat="@android:drawable/ic_menu_add" />
 
+        <!-- This should close the view and send the User back to the -->
         <Button
             android:id="@+id/backButton"
             android:layout_width="wrap_content"
@@ -55,6 +60,7 @@
             android:text="Edit" />
 
 
+        <!-- Unsure about this last part-->
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.constraintlayout.widget.Barrier

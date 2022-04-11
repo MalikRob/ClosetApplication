@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Unsure of the Purpose of this now -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <!-- Text View Meant To Hold The Data For Clothing Type -->
     <TextView
         android:id="@+id/edit_clothing_type"
         android:layout_width="0dp"
@@ -17,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
+    <!-- Text View Meant To Hold The Data For Clothing Color -->
     <TextView
         android:id="@+id/edit_clothing_color"
         android:layout_width="398dp"
@@ -28,6 +31,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_clothing_type" />
 
+    <!-- Text View Meant To Hold The Data For Clothing Description -->
     <TextView
         android:id="@+id/edit_clothing_description"
         android:layout_width="0dp"
