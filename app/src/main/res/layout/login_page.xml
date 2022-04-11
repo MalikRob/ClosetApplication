@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Login Page -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
    >
 
-
+    <!-- Padding to Push Other Objects Down -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,6 +17,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <!-- Invisible Text View -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,12 +25,9 @@
             android:text="Welcome to the Closet App"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
-
-
-
     </LinearLayout>
 
-
+    <!-- Layout Containing The Primary Components Of The View -->
     <LinearLayout
         android:id="@+id/input_group"
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-
+        <!-- Edit Text For the Username -->
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
@@ -49,6 +49,7 @@
             android:inputType="textPersonName"
             android:padding="15dp" />
 
+        <!-- Edit Text For the Password -->
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
@@ -58,7 +59,8 @@
             android:inputType="textPassword"
             android:padding="15dp" />
 
-
+        <!-- Button Meant to Verify Credentials -->
+        <!-- Transfers them to the grid layout page -->
         <Button
             android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
@@ -71,6 +73,8 @@
 
             android:textSize="17sp" />
 
+        <!-- Text View Button -->
+        <!-- Brings the User to the Registration Page -->
         <TextView
             android:id="@+id/textViewRegister"
             android:layout_width="wrap_content"

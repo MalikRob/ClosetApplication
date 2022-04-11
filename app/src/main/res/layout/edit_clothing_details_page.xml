@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Enables The User to Sroll down to see all content-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Gives padding to the bottom of the screen-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/edit_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- This is the title of the page. Using the same blue as the other titles.-->
-
-        <!--Clothing Type Dropdown Menu-->
-
+        <!-- Clothing Color Edit Text Section -->
         <EditText
             android:id="@+id/edit_clothing_color"
             android:layout_width="match_parent"
@@ -27,6 +26,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clothingColorTitle" />
 
+        <!-- Section that contains the image view meant to be change -->
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="134dp"
@@ -39,7 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clothingUploadTitle">
 
-
+            <!-- Blank Image view meant to be changed upon picture taken or gallery image selected-->
             <ImageView
                 android:id="@+id/clothing_item_photo"
                 android:layout_width="match_parent"
@@ -49,8 +49,8 @@
                 android:scaleType="centerInside" />
         </LinearLayout>
 
-        <!--Clothing Color Dropdown Menu-->
-
+        <!-- Simple Text View for the Title of the page -->
+        <!-- Not meant to be interacted with or updated -->
         <TextView
             android:id="@+id/clothingUploadTitle"
             android:layout_width="366dp"
@@ -64,7 +64,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
+        <!-- Simple Text View -->
+        <!-- Not meant to be interacted with or updated -->
         <TextView
             android:id="@+id/clothingTypeTitle"
             android:layout_width="160dp"
@@ -78,6 +79,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/camera_button" />
 
+        <!-- Clothing Type Edit Text Section -->
         <EditText
             android:id="@+id/edit_clothing_type"
             android:layout_width="match_parent"
@@ -90,6 +92,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clothingTypeTitle" />
 
+        <!-- Simple Text View -->
+        <!-- Not meant to be interacted with or updated -->
         <TextView
             android:id="@+id/clothingColorTitle"
             android:layout_width="160dp"
@@ -105,6 +109,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_clothing_type" />
 
+        <!-- Simple Text View -->
+        <!-- Not meant to be interacted with or updated -->
         <TextView
             android:id="@+id/clothing_description_title"
             android:layout_width="160dp"
@@ -121,6 +127,7 @@
             app:layout_constraintTop_toBottomOf="@+id/edit_clothing_color"
             tools:ignore="MissingConstraints" />
 
+        <!-- Clothing Description Edit Text Section -->
         <EditText
             android:id="@+id/edit_clothing_description"
             android:layout_width="match_parent"
@@ -137,6 +144,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/clothing_description_title" />
 
+        <!-- Camera Button -->
+        <!-- Meant to open the camera app -->
         <ImageButton
             android:id="@+id/camera_button"
             android:layout_width="90dp"
@@ -149,6 +158,8 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"
             app:srcCompat="@android:drawable/ic_menu_camera" />
 
+        <!-- Image Gallery Button -->
+        <!-- Meant to Open the Gallery button upon being pressed -->
         <ImageButton
             android:id="@+id/image_gallery_button"
             android:layout_width="100dp"

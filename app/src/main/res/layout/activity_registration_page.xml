@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Overall Layout-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
    >
 
-
+    <!-- Blank Space Because all the other fields go to the top-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,6 +16,7 @@
         android:gravity="center"
         android:layout_alignParentTop="true"
         android:layout_above="@id/input_group">
+        <!-- What all the spacing is attached to-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +26,7 @@
             android:textSize="20sp"/>
     </LinearLayout>
 
-
+    <!-- Border Around the Main Page Elements-->
     <LinearLayout
         android:id="@+id/input_group"
         android:layout_width="match_parent"
@@ -35,6 +38,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center">
 
+        <!-- Edit Text Field for Username Input-->
         <EditText
             android:id="@+id/editTextUsername"
             android:layout_width="match_parent"
@@ -44,6 +48,7 @@
             android:inputType="textPersonName"
             android:padding="15dp" />
 
+        <!-- Edit Text Field for Email address Input-->
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
@@ -53,6 +58,7 @@
             android:inputType="textEmailAddress"
             android:padding="15dp" />
 
+        <!-- Edit Text Field for Password Input-->
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
@@ -61,6 +67,7 @@
             android:hint="Password"
             android:inputType="textPassword"
             android:padding="15dp"/>
+        <!-- Edit Text Field for Password Input Confirmation-->
         <EditText
             android:id="@+id/editTextCnfPassword"
             android:layout_width="match_parent"
@@ -70,8 +77,8 @@
             android:inputType="textPassword"
             android:padding="15dp"/>
 
-
-
+        <!-- Button meant to confirm and load in the entered data-->
+        <!-- Takes the user back to the -->
         <Button
             android:id="@+id/buttonRegister"
             android:layout_width="match_parent"
@@ -84,6 +91,7 @@
 
             android:textSize="17sp"/>
 
+        <!-- Simple Text View, No Interaction or Updating-->
         <TextView
             android:id="@+id/textViewLogin"
             android:layout_width="wrap_content"
